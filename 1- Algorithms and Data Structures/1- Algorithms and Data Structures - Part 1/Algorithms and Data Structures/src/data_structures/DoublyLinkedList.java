@@ -1,7 +1,5 @@
 package data_structures;
 
-import java.util.Objects;
-
 public class DoublyLinkedList<T> {
 
     public DoublyLinkedListNode<T> head = null;
@@ -23,6 +21,7 @@ public class DoublyLinkedList<T> {
             return;
         }
         DoublyLinkedListNode<T> adding = new DoublyLinkedListNode<>(value);
+        adding.setPrevious(tail);
         tail.next = adding;
         tail = adding;
         count++;
@@ -86,6 +85,38 @@ public class DoublyLinkedList<T> {
         }
         count--;
         return true;
+    }
+
+    public boolean removeHead() {
+        if (head == null) return false;
+        DoublyLinkedListNode<T> next = head.next;
+        if (next != null) next.previous = null;
+        head = next;
+        count--;
+        return true;
+    }
+
+    public boolean removeTail() {
+        if (tail == null) return false;
+        DoublyLinkedListNode<T> previous = tail.previous;
+        if (previous != null) previous.next = null;
+        tail = previous;
+        count--;
+        return true;
+    }
+
+    public int size() {
+        return count;
+    }
+
+    public T getFirst() {
+        if (head == null) return null;
+        return head.value;
+    }
+
+    public T getLast() {
+        if (tail == null) return null;
+        return tail.value;
     }
 
     public DoublyLinkedListNode<T> getHead() {

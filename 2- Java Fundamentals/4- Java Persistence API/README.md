@@ -58,7 +58,7 @@ try (PreparedStatement stmt = getConnection().prepareStatement(query)){
 ## How would this be different in JPA?
 Looking at the same example:
 
-1- We'll have to annotate Book with ``@Entity`` and ad an ``@Id`` annotation:
+1- We'll have to annotate Book with ``@Entity`` and an ``@Id`` annotation:
 ```
 @Entity
 public class Book {

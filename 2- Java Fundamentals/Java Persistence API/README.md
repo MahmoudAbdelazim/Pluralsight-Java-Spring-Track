@@ -119,3 +119,125 @@ Currently there are 3 major JPA implementations which are:
 - Hibernate
 - EclipseLink
 - Apache Open JPA
+
+<hr>
+
+# 3- Mapping Entities with JPA
+The central service to manipulate instances of Entities is an `EntityManager`, which is created using an EntityManagerFactory in JavaSE, and can be injected in JavaEE and Spring.
+
+The configuration for a set of Entities is called a Persistence Unit, defined in a file called `persistence.xml`.
+
+`EntityManager` is an interface that is responsible for creating, removing, and finding entities by their primary keys.
+
+## CRUD Operations with JPA
+This is how we can apply CRUD using JPA EntityManager:
+
+We'll first create the EntityManager:
+```
+private EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPU");
+private EntityManager em = emf.createEntityManager();
+private EntityTransaction tx = em.getTransaction();
+```
+
+### 1- Create
+```
+public Book createBook(Book book) {
+    tx.begin();
+    em.persist(book);
+    tx.commit();
+    return book;
+}
+```
+
+### 2- Find
+```
+public Book findBook(Long id) {
+    return em.find(Book.class, id);
+}
+```
+
+### 3- Delete
+```
+public void removeBook(Long id) {
+    Book book = em.find(Book.class, id);
+    if (book != null) {
+        tx.begin();
+        em.remove(book);
+        tx.commit();
+    }
+}
+```
+or
+```
+public void removeBook(Book book) {
+    Book bookToBeDeleted = em.merge(book);
+    tx.begin();
+    em.remove(bookToBeDeleted);
+    tx.commit();
+}
+```
+### 4- Update
+```
+public Book raiseUnitCost(Book book, Float raise) {
+    Book bookToBeUpdated = em.merge(book);
+    tx.begin();
+    bookToBeUpdated.setUnitCost(bookToBeUpdated.getUnitCost() + raise);
+    tx.commit();
+    return book;
+}
+```
+
+## Default Entity Mapping
+With JPA, the provider has default set of rules that are applied to control the mapping of relational entities.
+A table's name will be the same as the Entity name in the code, as well as the column names.
+
+Also, data types are mapped by default, a string is mapped to a varchar(255), and a long is mapped to a bigint in database.
+
+These defaults can be changed using annotations:
+- `@Table(name = "_")` allows you to change table name
+- `@Column(name = "_")` allows you to change column name, and we can also change many aspects of the column here like length, nullable, etc.
+- An enumerated type should be annotated with `@Enumerated`.
+
+<hr>
+
+# Relationships and Inheritance
+Mapping Object-Oriented Relationships to relational databases is done easier with JPA.
+
+## One-To-One Mapping
+in a unidirectional and directional one-to-one relationship, JPA automatically applies annotations `@OneToOne` and `@JoinColumn` with a default column name of the other entity's name + id, which can be changed if we want.
+
+## One-To-Many Mapping
+in a one-to-many relationship, an Entity has a collection of instances of the other Entity.
+
+Example:
+```
+@Entity
+public class CD {
+    @OneToMany
+    private Set<Musician> musicians = new HashSet<>();
+}
+
+@Entity
+public class Musician {
+    @ManyToOne
+    private CD cd;
+}
+```
+
+## Many-To-Many Mapping
+in a many-to-many relationship, an Entity may have a collection of instances of the other Entity, and the other Entity may have a collection of instances of the Entity.
+
+Example:
+```
+@Entity
+public class CD {
+    @ManyToMany
+    private Set<Musician> musicians = new HashSet<>();
+}
+
+@Entity
+public class Musician {
+    @ManyToMany
+    private Set<CD> cd = new HashSet<>;
+}
+```

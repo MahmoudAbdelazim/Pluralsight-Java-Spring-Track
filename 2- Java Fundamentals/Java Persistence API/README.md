@@ -200,7 +200,7 @@ These defaults can be changed using annotations:
 
 <hr>
 
-# Relationships and Inheritance
+# 4- Relationships and Inheritance
 Mapping Object-Oriented Relationships to relational databases is done easier with JPA.
 
 ## One-To-One Mapping
@@ -240,4 +240,86 @@ public class Musician {
     @ManyToMany
     private Set<CD> cd = new HashSet<>;
 }
+```
+## Cascading Events
+IN JPA, events (persist and remove) by default are not cascaded for any relationships.
+This means that if an object contains a collection of another object, calling persist on the root object will not call persist on the objects inside, same for remove.
+
+To apply cascading, we add a `cascade` parameter to the relationship annotation.
+
+Example:
+```
+@Entity
+public class CD {
+    @OneToMany(cascade = {PERSIST, REMOVE, MERGE}) // OR cascade = ALL
+    private Set<Musician> musicians = new HashSet<>();
+}
+```
+
+## Fetching Relationships
+What about the find method?
+When we call find on a CD will it also fetch the Musicians inside it? this depends on fetching mode.
+### Eager Fetching
+Eager fetching means that when the object is loaded, this also propagates to the objects it relates to, this requires one database access through join queries and the objects get loaded into memory.
+
+### Lazy Fetching
+Laze fetching means that the objects it relates to don't get loaded eagerly, instead, they get loaded when a getter method is called on them.
+
+By default in JPA, `@OneToOne` and `ManyToOne` relationships are eagerly fetched, while `@OneToMany` and `ManyToMany` relationships are lazily fetched.
+
+To change this default, a `fetch` attribute is added to the relationship with values `LAZY` or `EAGER`.
+
+## Inheritance in JPA
+inheritance is completely unkown in relational databases.
+
+That's why it needs mapping of a structural inheritance model to a flat relational structure.
+
+JPA has three strategies for mapping inheritance:
+
+### 1- Single Type Strategy
+In this strategy, when a subclass inherits from a superclass, the database will contain a single table for both of them called by default with the name of the superclass, and has the columns of all the attributes in both the superclass and the subclass, and also has a column for the type of object.
+
+This strategy also requires that columns of the subclass to be nullable, in order to be able to add new rows with the values of the parent only.
+
+This is the default strategy for inheritance mapping in JPA.
+### 2- Joined-Subclass Strategy
+In this strategy, when a subclass inherits from a superclass, the database will contain two tables, one for the superclass columns and the other for the subclass columns.
+
+When an object from the subclass is persisted, it will actually be saved in database as two rows, one in the superclass table defining the superclass attributes, and the other in the subclass table, that's why it's called joined.
+### 3- Table-per-concrete-class Strategy
+In this strategy, each Entity is mapped to its own table with the full list of attributes it has (from itself and parent).
+
+To change the inheritance strategy in JPA, an `@Inheritance` annotation is added to the superclass entity, with an attribute `strategy = SINGLE_TABLE or JOINED_CLASS or TABLE_PER_CLASS`'.
+
+<hr>
+
+# 5- Querying Entities
+
+JPA has two sides:
+- the first is to map objects to relational database
+- the second is to query these mapped objects
+
+The EntityManager has different abilities in terms of querying entities using JPQL (Java Persistance Query Language).
+
+## JPQL
+JPQL is a query language that is similar to SQL but in Java and in an object-oriented approach, and these queries are translated into SQL.
+
+JPQL has a syntax very similar to SQL, but instead of calling entities with table names we call them with their Class names, and using their attributes and relations as ordinary objects with the "`.`" notation.
+
+Example:
+
+SQL Query:
+```
+SELECT title AS Title, COUNT(*) AS Authors
+FROM item
+JOIN book_author
+ON item.id = book_author.book_fk
+GROUP BY item.title;
+```
+Using JPQL:
+```
+SELECT b.title, COUNT(a)
+FROM Book b
+LEFT JOIN b.authors a
+GROUP BY b
 ```

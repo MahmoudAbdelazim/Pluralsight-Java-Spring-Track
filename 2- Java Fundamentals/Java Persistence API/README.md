@@ -340,6 +340,8 @@ Entities have states depending on the operations performed, and these states all
 
 5- When the `remove()` method is called on a managed object, its state becomes "Removed".
 
+## Callback Annotations
+
 Depending on these states, we can apply certain business logic to control our entities depending on what state they're in or about to be in.
 
 We can do this by creating methods annotated with:
@@ -352,4 +354,32 @@ We can do this by creating methods annotated with:
 - `@PostRemove`
 - `@PostLoad`: Will be called after a call to the `find()` method, or a JPQL select query.
 
+These annotations allow us to apply certain business logic at different entity states, for example, we can have a `@Transient` age attribute in the entity, and a `calculateAge()` callback method that calculates the age depending on the dateOfBirth, and this method is annotated with `@PostLoad`, `@PostPersist` and `@PostUpdate@` so that it's called whenever an persist, load or update happens.
+
+## Java EE and Bean Validation
+
+In Java EE, we can use the Bean Validation Annotations in order to validate our entities at runtime before committing them to a database, with multiple annotations available for validations.
+
 Example:
+```
+public class Artist {
+    private Long id;
+
+    @NotNull @Size(min=2, max=50)
+    private String firstName;
+}
+
+public class ArtistService {
+    @Inject
+    private Validator validator;
+
+    public void createArtist(Artist artist) {
+        Set<ConstraintViolation<Artist>> violations
+         = validator.validate(artist);
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
+    }
+}
+```
+This way, an exception will be thrown if the firstName of Artist is null or it's size is not in the specified range.

@@ -323,3 +323,33 @@ FROM Book b
 LEFT JOIN b.authors a
 GROUP BY b
 ```
+
+<hr>
+
+# 6- Entity Lifecycle
+
+Entities have states depending on the operations performed, and these states allow us to do certain operations and event callbacks to add business logic to our entities.
+
+1- When an entity object is created with the `new` keyword, its state is "Transient", meaning that it's a normal POJO.
+
+2- When the `persist()` method is called on this POJO, its state become "Managed", meaning that this object is managed by the database, and changes to it will by synchronized with the database.
+
+3- When the `find()` method is called it also returns a managed object.
+
+4- When the `merge()` method is called on an object, the object's state is "Detached" and the object returned is "Managed".
+
+5- When the `remove()` method is called on a managed object, its state becomes "Removed".
+
+Depending on these states, we can apply certain business logic to control our entities depending on what state they're in or about to be in.
+
+We can do this by creating methods annotated with:
+
+- `@PrePersist`: the method will be called automatically before a `persist()` is excuted on an unmanaged entity.
+- `@PostPersist`: will be called after the `persist()`.
+- `@PreUpdate`: Will be called before any update happens to the managed entity.
+- `@PostUpdate`
+- `@PreRemove`
+- `@PostRemove`
+- `@PostLoad`: Will be called after a call to the `find()` method, or a JPQL select query.
+
+Example:

@@ -383,3 +383,7 @@ public class ArtistService {
 }
 ```
 This way, an exception will be thrown if the firstName of Artist is null or it's size is not in the specified range.
+
+<hr>
+
+[Mahmoud Abdelazim](https://github.com/MahmoudAbdelazim)

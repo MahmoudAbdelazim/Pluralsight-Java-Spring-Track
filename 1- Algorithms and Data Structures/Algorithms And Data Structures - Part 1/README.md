@@ -101,3 +101,7 @@ In a post-order traversal, the left child is visited first, then the right child
 
 ### Traversal Complexity
 Traversing a BST takes O(n) time.
+
+<hr>
+
+[Mahmoud Abdelazim](https://github.com/MahmoudAbdelazim)

@@ -148,3 +148,7 @@ synchronization
 Synchronization techniques are done inside the collection itself using locks, ensuring safe concurrent access.
 
 Every language, including Java provides some easy-to-use concurrent-safe Collections to work with in parrallel systems.
+
+<hr>
+
+[Mahmoud Abdelazim](https://github.com/MahmoudAbdelazim)

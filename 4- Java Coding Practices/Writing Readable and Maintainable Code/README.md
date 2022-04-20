@@ -1,14 +1,11 @@
 # Java: Writing Readable and Maintainable Code
-Clean Code is not a nice-to-have, it's a necessity.
-
-Dirty code means more bugs, decreased productivity, and lower job satisfaction.
 
 <i>"Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live"</i> - John Woods
 
 <hr>
 
 # 1. Naming Matters.
-Naming is one of the most important aspects of coding
+Naming is one of the most important aspects of coding.
 
 ## Classes
 A class name should be:

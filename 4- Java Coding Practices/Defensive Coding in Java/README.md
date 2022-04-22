@@ -132,6 +132,9 @@ Don't:
 - catch NullPointerException
 - catch and swallow the exception (do nothing in the catch block)
 
+## Use Static Analysis Tools
+such as SonarLint plugin in the IDE
+
 
 <hr>
 

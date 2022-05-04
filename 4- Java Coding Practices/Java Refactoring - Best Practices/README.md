@@ -132,28 +132,106 @@ Another is to combine, change until both methods are identical and leave just on
 # Change Preventers
 When code change in one place forces you to change code in many other places.
 
-## Divergent Change
+## 1- Divergent Change
 Changing several unrelated things within the same class.
 
 The solution is the either extract method (split) or extract class.
 
-## Solution Sprawl
+## 2- Solution Sprawl
 A solution is broken into multiple classes or places.
 
-## Shotgun Surgery
+## 3- Shotgun Surgery
 An update requires additional changes in muliple classes or modules, this is a result of Solution Sprawl, they can be used interchangeably.
 
 The solution is usually to combine into one, change until you have a class with a single responsibility that encapsulates related changes.
 
-## Parallel Inheritance Hierarchies
+## 4- Parallel Inheritance Hierarchies
 You create a subclass in one inhertance tree, this forces you to create another subclass in another tree. This is a special case of shotgun surgery.
 
 One solution is to merge the hierarchies, moving methods from one of the trees to the other, and them removing it.
 
 Consider applying the Visitor Pattern or the Bridge Pattern.
 
+<hr>
 
+# Couplers
+Couplers are code smells that result in tightly coupled classes.
 
+Usually preventing couplers is done through improving encapsulation and applying SRP.
+
+## 1- Feature Envy
+ Class uses methods or accesses data of another class more than its own.
+
+ A solution would be either to move methods that should belong together to the same class, or encapsulate the functionality in a single call.
+
+ ## 2- Inappropriate Intimcay
+ A class knows too much, or has to deal with, internal details of another class.
+
+ Always try to hide as much as possible, mark fields and methods private until they're publicly needed.
+
+ ## 3- Excessive Exposure
+ A class or a module exposes too many internal details about itself.
+It's when a class forces you to know or care too much about its internal details and state in order to be able to deal with it.
+
+There is more than one solution, one is to code to make this class implement an interface that forces it to be minimal, another is to create simpler method signatures that internally do the hard work instead of the client having to deal with much details.
+
+## 4- Message Chain
+Code that calls mutliple methods to get to the required data.
+
+Ex: `customer.getAddress().getCountry().toString();`
+
+A possible solution would be to move the call chain to a new method `getCountry()` inside the Customer class.
+
+## 5- Middle Man
+A class that performs one action, which is delegating work to other classes. (can be a dispensable code smell also)
+
+Delegation is fine, but if the class only delegates and does nothing else, it's usually not.
+
+The solution is to remove the middle man, and make the client deal with the actuall classes that do the work, and refactor them in some way.
+
+Note that there are design patterns that use the middle man, such as Facade, Proxy and Adapter pattern.
+
+<hr>
+
+# Dispensables
+Dispensables are code that is not needed and can be removed. Their solution is usually just remove themm.
+
+## 1- Comments
+Misused or misplaced comments.
+
+Comments shouldn't compensate for bad code. Avoid redundant, wiki, misleading comments or commented-out code.
+
+## 2- Dead Code
+Unused code that will never run.
+
+## 3- Duplicate Code
+Same code written multiple times in several places.
+
+DRY
+
+## 4- Speculative Generality
+Code that is created "just in case".
+
+Like public setters and getters that will pobably not be used or needed.
+
+YAGNI: You Ain't Gonna Need It
+
+## 5- Lazy Class and Data Class
+A class that doesn't do enough to have a reason to exist, like the Middle Man described before.
+
+Solution is either to remove it or add more functionality to it (give it responsibility).
+
+Data Classes are debatable whether they're a bad smell or not, depending on how they're used.
+
+<hr>
+
+# Refactoring Tips & Principles
+- Understand your code well before refactoring.
+- Create or run existing tests.
+- Keep changes small, and commit often.
+- Manage the scope of your refactoring.
+- Seek help and advice.
+- Use code review.
 
 
 

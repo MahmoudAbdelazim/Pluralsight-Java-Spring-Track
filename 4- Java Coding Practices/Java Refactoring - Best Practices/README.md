@@ -232,6 +232,7 @@ Data Classes are debatable whether they're a bad smell or not, depending on how 
 - Manage the scope of your refactoring.
 - Seek help and advice.
 - Use code review.
+- Use refactoring tools (such as SonarLint).
 
 
 

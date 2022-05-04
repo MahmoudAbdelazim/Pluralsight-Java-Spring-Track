@@ -118,6 +118,39 @@ Move these fields into a separate class
 ### Replace Method with Method Object
 Move the method implementatino to a new separate class that only has this method (An Algorithm Object).
 
+## 4- Two or more Classes with Different Interfaces
+Two or more methods exist across multiple classes that do the same thing, recurring in code duplication.
+
+It can be considered also as inheritance misuse.
+
+A solution would be to create an abstract class or an interface that these classes implement
+
+Another is to combine, change until both methods are identical and leave just one.
+
+<hr>
+
+# Change Preventers
+When code change in one place forces you to change code in many other places.
+
+## Divergent Change
+Changing several unrelated things within the same class.
+
+The solution is the either extract method (split) or extract class.
+
+## Solution Sprawl
+A solution is broken into multiple classes or places.
+
+## Shotgun Surgery
+An update requires additional changes in muliple classes or modules, this is a result of Solution Sprawl, they can be used interchangeably.
+
+The solution is usually to combine into one, change until you have a class with a single responsibility that encapsulates related changes.
+
+## Parallel Inheritance Hierarchies
+You create a subclass in one inhertance tree, this forces you to create another subclass in another tree. This is a special case of shotgun surgery.
+
+One solution is to merge the hierarchies, moving methods from one of the trees to the other, and them removing it.
+
+Consider applying the Visitor Pattern or the Bridge Pattern.
 
 
 

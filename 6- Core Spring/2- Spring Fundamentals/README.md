@@ -1,5 +1,9 @@
 # Spring Fundamentals
 
+Demo Application: [Conference Scheduling](https://github.com/MahmoudAbdelazim/Pluralsight-Java-Spring-Track/tree/main/6-%20Core%20Spring/2-%20Spring%20Fundamentals/Conference%20Scheduling).
+
+<hr>
+
 # What is Spring?
 Spring at its core is just an Inversion of Control container for Dependency Injection, which is, instead of instantiating the dependencies between objects ourselves inside the objects, Spring injects those dependencies into our objects for us.
 
